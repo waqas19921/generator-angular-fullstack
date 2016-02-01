@@ -723,7 +723,18 @@ module.exports = function (grunt) {
             var aMod = module.test(a);
             var bMod = module.test(b);
             // inject *.module.js first
-            return (aMod === bMod) ? 0 : (aMod ? -1 : 1);
+            if (aMod === bMod) {
+              // either both modules or both non-modules, so just sort normally
+              if (a < b) {
+                return -1;
+              } else if (a > b) {
+                return 1;
+              } else {
+                return 0;
+              }
+            } else {
+              return (aMod ? -1 : 1);
+            }
           },
           starttag: '<!-- injector:js -->',
           endtag: '<!-- endinjector -->'
