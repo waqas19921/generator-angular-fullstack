@@ -35,7 +35,7 @@ const transpile = lazypipe()
     .pipe(babel);
 
 gulp.task('clean', () => {
-    return del(['generators/**/*', './test/(**|!fixtures/node_modules|!fixtures/bower_components)/*']);
+    return del(['generators/**/*', './test/(**|!fixtures/node_modules)/*']);
 });
 
 gulp.task('babel', () => {
@@ -107,10 +107,7 @@ function updateFixtures(target) {
     const dest = __dirname + (deps ? '/angular-fullstack-deps/' : '/test/fixtures/');
     const appName = deps ? 'angular-fullstack-deps' : 'tempApp';
 
-    return Promise.all([
-        processJson('templates/app/_package.json', dest + 'package.json', {appName, genVer, private: !deps}),
-        processJson('templates/app/_bower.json', dest + 'bower.json', {appName, genVer, private: !deps})
-    ]);
+    return processJson('templates/app/_package.json', dest + 'package.json', {appName, genVer, private: !deps});
 }
 
 gulp.task('updateFixtures', cb => {
@@ -137,16 +134,13 @@ function execAsync(cmd, opt) {
 }
 
 gulp.task('installFixtures', function() {
-    gutil.log('installing npm & bower dependencies for generated app');
+    gutil.log('installing npm dependencies for generated app');
     let progress = setInterval(() => {
         process.stdout.write('.');
     }, 1 * 1000);
     shell.cd('test/fixtures');
 
-    return Promise.all([
-        execAsync('npm install --quiet', {cwd: '../fixtures'}),
-        execAsync('bower install', {cwd: '../fixtures'})
-    ]).then(() => {
+    execAsync('npm install --quiet', {cwd: '../fixtures'}).then(() => {
         process.stdout.write('\n');
         if(!process.env.SAUCE_USERNAME) {
             gutil.log('running npm run-script update-webdriver');
