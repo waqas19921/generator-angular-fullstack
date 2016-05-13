@@ -1,13 +1,17 @@
-'use strict';
+import angular from 'angular';
+<%_ if(filters.ngroute) { _%>
+import ngroute from 'angular-route';<% } _%>
+<%_ if(filters.uirouter) { _%>
+import uiRouter from 'angular-ui-router';<% } _%>
 
-(function() {
+import routing from './main.routes';
 
 class MainController {
-
-  constructor($http<% if (filters.socketio) { %>, $scope, socket<% } %>) {
+  constructor($http<% if(filters.socketio) { %>, $scope, socket<% } %>) {
     this.$http = $http;<% if (filters.socketio) { %>
     this.socket = socket;<% } %>
-    this.awesomeThings = [];<% if (filters.socketio) { %>
+    this.awesomeThings = [];
+    <%_ if (filters.socketio) { _%>
 
     $scope.$on('$destroy', function() {
       socket.unsyncUpdates('thing');
@@ -33,10 +37,15 @@ class MainController {
   }<% } %>
 }
 
-angular.module('<%= scriptAppName %>')
-  .component('main', {
-    templateUrl: 'app/main/main.html',
-    controller: MainController
-  });
-
-})();
+export default angular.module('<%= scriptAppName %>.main', [
+  <%_ if(filters.ngroute) { _%>
+  ngroute<% } _%>
+  <%_ if(filters.uirouter) { _%>
+  uiRouter<% } _%>
+])
+    .config(routing)
+    .component('main', {
+      template: require('./main.<%= templateExt %>'),
+      controller: MainController
+    })
+    .name;

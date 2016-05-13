@@ -1,10 +1,11 @@
 'use strict';
 
-describe('Component: mainComponent', function() {
-
+describe('Component: MainComponent', function() {
   // load the controller's module
-  beforeEach(module('<%= scriptAppName %>'));<% if (filters.uirouter) {%>
-  beforeEach(module('stateMock'));<% } %><% if (filters.socketio) {%>
+  beforeEach(module('<%= scriptAppName %>'));
+  <%_ if (filters.uirouter) { _%>
+  beforeEach(module('stateMock'));<% } _%>
+  <%_ if (filters.socketio) { _%>
   beforeEach(module('socketMock'));<% } %>
 
   var scope;

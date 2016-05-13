@@ -1,0 +1,117 @@
+.thing-form {
+    margin: 20px 0;
+}
+
+#banner {
+    border-bottom: none;
+    margin-top: -20px;
+}
+
+.hero-unit {
+    position: relative;
+    padding: 30px 15px;
+    color: #333;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    background: white;
+    p {
+        font-size: 21px;
+        font-weight: 200;
+    }
+}
+
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    border-top: $subtle-border;
+    background-color: $primaryColor;
+    color: $ak-base-color-darkest;
+    font-weight: 600;
+    p {
+        float: right;
+        margin: 0;
+    }
+}
+
+.styled-home-text {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-size: 70px;
+    svg {
+        outline: none;
+    }
+}
+
+$colors: $accentColor, #F5A503, #E9F1DF, #56D9CD, $primaryColor;
+$max: length($colors);
+$dash: 70;
+$dash-gap: 10;
+$dash-space: $dash * ($max - 1) + $dash-gap * $max;
+$time: 6s;
+$time-step: $time/$max;
+
+.dashed-stroke-text {
+    fill: none;
+    stroke-width: 3;
+    stroke-linejoin: round;
+    stroke-dasharray: $dash $dash-space;
+    stroke-dashoffset: 0;
+    animation: stroke $time infinite linear;
+
+    @for $item from 1 through $max {
+        &:nth-child(#{$max}n + #{$item}){
+            $color: nth($colors, $item);
+            stroke: $color;
+            animation-delay: -($time-step * $item);
+        }
+    }
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: -($dash + $dash-gap) * $max;
+    }
+}
+
+.patterned-text {
+    fill: url(#p-spots);
+    stroke: #1D4259;
+    stroke-width: 2;
+    stroke-opacity: .5;
+}
+
+.g-spots circle {
+    @for $item from 1 through $max {
+        &:nth-child(#{$max}n + #{$item}){
+            fill: nth($colors, $item);
+        }
+    }
+}
+
+.text-copy-stroke {
+    fill: none;
+    stroke: white;
+    stroke-width: 10px;
+}
+
+.c-fill {
+    fill: url(#p-lines);
+    -webkit-transform-origin: 400px 150px;
+    -ms-transform-origin: 400px 150px;
+    transform-origin: 400px 150px;
+    -webkit-transform: rotate(32deg);
+    -ms-transform: rotate(32deg);
+    transform: rotate(32deg);
+}
+
+/* Fix for firefox */
+.r-fill--color {
+    fill: #1a8cff;
+}
+
+.text-mask {
+    fill: white;
+    stroke: white;
+    stroke-opacity: .2;
+    stroke-width: 5;
+}

@@ -1,12 +1,12 @@
 'use strict';
 
-class NavbarController {
+export class NavbarComponent {
   //start-non-standard
   menu = [{
     'title': 'Home',
     <% if (filters.uirouter) { %>'state': 'main'<% } else { %>'link': '/'<% } %>
   }];
-
+  
   isCollapsed = true;
   //end-non-standard
   <%_ if(filters.ngroute || filters.auth) { _%>
@@ -28,5 +28,9 @@ class NavbarController {
   }<% } %>
 }
 
-angular.module('<%= scriptAppName %>')
-  .controller('NavbarController', NavbarController);
+export default angular.module('<%= scriptAppName %>')
+  .component('navbar', {
+    template: require('./navbar.html'),
+    controller: NavbarComponent
+  })
+  .name;
